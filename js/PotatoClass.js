@@ -12,6 +12,7 @@ var Potato = function()
         listening: false
     });
 	this.speedY = 0;
+	this.hitbox = new Hitbox(100-this.sprite.width()/2, 100-this.sprite.height()/2, this.sprite.width(), this.sprite.height());
 	
 	this.addToLayer = function(layer)
 	{
@@ -31,9 +32,9 @@ var Potato = function()
 	this.reevaluatePosition = function()
 	{
 		//-------------code en dur-------------------
-		if(this.sprite.y() + this.sprite.height() >= 480)
+		if(this.sprite.y() + this.sprite.height()/2 >= 480)
 		{
-			this.sprite.y(480 - this.sprite.height());
+			this.sprite.y(480 - this.sprite.height()/2);
 			this.speedY = 0;
 		}
 		else
@@ -41,5 +42,16 @@ var Potato = function()
 			this.speedY += 0.5;
 			this.sprite.move({x:0, y:this.speedY});
 		}
+		this.hitbox.setY(this.sprite.y()-this.sprite.width()/2);
+	}
+	
+	this.getHitbox = function()
+	{
+		return this.hitbox;
+	}
+	
+	this.intersect = function(object)
+	{
+		return this.hitbox.intersect(object.getHitbox());
 	}
 }
