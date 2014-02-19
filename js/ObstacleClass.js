@@ -13,7 +13,6 @@ var Obstacle = function(y, height)
 	
 	this.moveForward = function(speedX)
 	{
-		this.x -= speedX;
 		this.sprite.move({x:-speedX, y:0});
 		this.hitbox.setX(this.sprite.x());
 	}
@@ -35,7 +34,7 @@ var Obstacle = function(y, height)
 	
 	this.outFromLayer = function()
 	{
-		if(this.x + this.sprite.width() < 0)
+		if(this.sprite.x() + this.sprite.width() < 0)
 			return true;
 		else
 			return false;

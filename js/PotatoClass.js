@@ -14,6 +14,14 @@ var Potato = function()
 	this.speedY = 0;
 	this.hitbox = new Hitbox(100-this.sprite.width()/2, 100-this.sprite.height()/2, this.sprite.width(), this.sprite.height());
 	
+	this.reload = function()
+	{
+		this.sprite.x(100);
+		this.sprite.y(100);
+		this.speedY = 0;
+		this.hitbox = new Hitbox(100-this.sprite.width()/2, 100-this.sprite.height()/2, this.sprite.width(), this.sprite.height());
+	}
+	
 	this.addToLayer = function(layer)
 	{
 		layer.add(this.sprite);

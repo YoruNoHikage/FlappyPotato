@@ -45,8 +45,9 @@ window.onload = function() {
 			
 			//intersections (game over)
 			if(potato.intersect(obstacles[i]))
-				alert("perdu");
+				reloadGame();
 		}
+		
 		if(obstacles.length > 0)
 		{
 			//obstacles out from layer ?
@@ -54,7 +55,7 @@ window.onload = function() {
 			{
 				//remove top & bot obstacles
 				obstacles.shift();
-				obstacles.shift();
+				layer.draw();
 			}
 		}
 		
@@ -63,6 +64,20 @@ window.onload = function() {
 	
 	scene.add(layer);
 	gameLoop();
+	
+	
+	//-restart game----------------------------------
+	function reloadGame()
+	{
+		potato.reload();
+		
+		for(var i = 0; i < obstacles.length; i++)
+			obstacles[i].moveForward(700);
+		for(var i = 0; i < obstacles.length; i++)
+			obstacles.shift();
+		
+		layer.draw();
+	}
 	
 	//-create obstacles every x seconds-------------------------
 	function createObstacle()
