@@ -32,8 +32,10 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 			_obstacles[i].moveForward(_speedX);
 			_obstacles[i].draw(_context);
 			
+			console.log(_potato.getHitbox().y);
+			
 			//intersections (game over)
-			if(_potato.intersect(_obstacles[i]))
+			if(_potato.intersect(_obstacles[i]) || _potato.getHitbox().y + _potato.getHitbox().height >= canvasHeight)
 				_self.reloadGame();
 		}
 		
