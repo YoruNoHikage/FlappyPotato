@@ -3,10 +3,20 @@ window.onload = function()
 	var canvas  = document.querySelector('#canvas');
 	var context = canvas.getContext('2d');
 	var game = new Game(640, 480, context, canvas);
-	game.gameLoop();
+	var loaded = false;
 	
-	//periodic obstacle creation
-	window.setInterval(game.createObstacle, 2000);
+	function loop()
+	{
+		if(game.everythingLoaded())
+		{
+			game.gameLoop();
+			//periodic obstacle creation
+			window.setInterval(game.createObstacle, 2000);
+		}
+		else
+			setTimeout(loop,100);
+	}
+	loop();
 	
 	//Keyboard Management-------------------------------------
 	var keyRepetition = false;

@@ -7,6 +7,8 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 	var _canvas = canvas;
 
 	var _potato = new Potato(canvasWidth, canvasHeight);
+	window.setInterval(_potato.nextSprite, 50);
+
 	var _obstacles = new Array();
 
 	var _speedX = 2;
@@ -74,5 +76,11 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 	this.arrowUp = function()
 	{
 		_potato.addAcceleration(-10);
+		_potato.changeCurrentSprite(0);
+	}
+
+	this.everythingLoaded = function()
+	{
+		return _potato.imgLoaded(); 
 	}
 }
