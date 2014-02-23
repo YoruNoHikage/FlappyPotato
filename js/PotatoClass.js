@@ -1,65 +1,59 @@
-var Potato = function()
+var Potato = function(canvasWidth, canvasHeight)
 {
-	this.sprite = new Kinetic.Circle({
-        x: 100,
-        y: 100,
-        radius: 20,
-        scaleX: 1.5,
-        fill: 'yellow',
-		stroke: 'black',
-        strokeWidth: 2,
-        strokeScaleEnabled: false,
-        listening: false
-    });
-	this.speedY = 0;
-	this.hitbox = new Hitbox(100-this.sprite.width()/2, 100-this.sprite.height()/2, this.sprite.width(), this.sprite.height());
+	//context carac
+	var _canvasWidth = canvasWidth;
+	var _canvasHeight = canvasHeight;
+    //the potato's attributes (position, size, cooking)
+    var _x = 100;
+    var _y = 100;
+    var _width = 60;
+    var _height = 40;
+	var _speedY = 0;
+	var _hitbox = new Hitbox(_x, _y, _width, _height);
 	
+	//when you want to reset the game
 	this.reload = function()
 	{
-		this.sprite.x(100);
-		this.sprite.y(100);
-		this.speedY = 0;
-		this.hitbox = new Hitbox(100-this.sprite.width()/2, 100-this.sprite.height()/2, this.sprite.width(), this.sprite.height());
+		_x = 100;
+		_y = 100;
+		_speedY = 0;
 	}
 	
-	this.addToLayer = function(layer)
+	this.draw = function(context)
 	{
-		layer.add(this.sprite);
+		context.fillStyle = "gold";
+		context.fillRect(_x, _y, _width, _height);
 	}
 	
-	this.draw = function(layer)
-	{
-		layer.draw(this.sprite);
-	}
-	
+	//to simulate gravity
 	this.addAcceleration = function(acc)
 	{
-		this.speedY = acc;
+		_speedY = acc;
 	}
 	
+	//called before processing each frame
 	this.reevaluatePosition = function()
 	{
-		//-------------code en dur-------------------
-		if(this.sprite.y() + this.sprite.height()/2 >= 480)
+		if(_y + _height >= _canvasHeight)
 		{
-			this.sprite.y(480 - this.sprite.height()/2);
-			this.speedY = 0;
+			_y = _canvasHeight - _height;
+			_speedY = 0;
 		}
 		else
 		{
-			this.speedY += 0.5;
-			this.sprite.move({x:0, y:this.speedY});
+			_speedY += 0.5;
+			_y += _speedY;
 		}
-		this.hitbox.setY(this.sprite.y()-this.sprite.width()/2);
+		_hitbox.setY(_y);
 	}
 	
 	this.getHitbox = function()
 	{
-		return this.hitbox;
+		return _hitbox;
 	}
 	
 	this.intersect = function(object)
 	{
-		return this.hitbox.intersect(object.getHitbox());
+		return _hitbox.intersect(object.getHitbox());
 	}
 }

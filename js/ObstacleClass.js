@@ -1,40 +1,39 @@
-var Obstacle = function(y, height)
+var Obstacle = function(y, height, canvasWidth, canvasHeight)
 {
-	this.sprite = new Kinetic.Rect({
-        width: 50,
-		height: height,
-		x: 640,
-        y: y,
-        radius: 20,
-        fill: 'green',
-        listening: false
-    });
-	this.hitbox = new Hitbox(640, y, 50, height);
+	//context carac
+	var _canvasWidth = canvasWidth;
+	var _canvasHeight = canvasHeight;
+	//obstacles carac
+    var _x = _canvasWidth;
+    var _y = y;
+    var _width = 50;
+    var _height = height;
+	var _hitbox = new Hitbox(_x, _y, _width, _height);
 	
+	//movement function
 	this.moveForward = function(speedX)
 	{
-		this.sprite.move({x:-speedX, y:0});
-		this.hitbox.setX(this.sprite.x());
+		_x -= speedX;
+		_hitbox.setX(_x);
 	}
 	
-	this.draw = function(layer)
+	//draw the obstacle
+	this.draw = function(context)
 	{
-		layer.draw(this.sprite);
+		context.fillStyle = "green";
+		context.fillRect(_x, _y, _width, _height);
 	}
 	
-	this.addToLayer = function(layer)
-	{
-		layer.add(this.sprite);
-	}
-	
+	//if you want to give this hitbox to an intersect function
 	this.getHitbox = function()
 	{
-		return this.hitbox;
+		return _hitbox;
 	}
 	
+	//detect if the potato get out of bounds
 	this.outFromLayer = function()
 	{
-		if(this.sprite.x() + this.sprite.width() < 0)
+		if(_x + _width < 0)
 			return true;
 		else
 			return false;
