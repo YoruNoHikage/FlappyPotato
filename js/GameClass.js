@@ -8,10 +8,10 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 
 	var _potato = new Potato(canvasWidth, canvasHeight);
 	window.setInterval(_potato.nextSprite, 50);
+	var _score = 0;
 
 	var _obstacles = new Array();
-
-	var _speedX = 2;
+	var _speedX = 4;
 	var _holeLength = 190;
 
 	//instance of this to enable the callback function (it stinks)
@@ -28,14 +28,23 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 		_potato.reevaluatePosition();
 		_potato.draw(_context);
 
+		//score display
+		context.font = "bold 32pt Calibri,Geneva,Arial";
+		context.fillStyle = "#000";
+		context.fillText(_score / 2, _canvasWidth * 0.9, _canvasHeight * 0.1);
+
 		//for each obstacle
 		for(var i = 0; i < _obstacles.length; i++)
 		{
 			_obstacles[i].moveForward(_speedX);
 			_obstacles[i].draw(_context);
 			
-			console.log(_potato.getHitbox().y);
-			
+			if(_obstacles[i].lookIfPassed(_potato.getHitbox()) && !_obstacles[i].isPassed())
+			{
+				_score++;
+				_obstacles[i].pass();
+			}
+
 			//intersections (game over)
 			if(_potato.intersect(_obstacles[i]) || _potato.getHitbox().y + _potato.getHitbox().height >= canvasHeight)
 				_self.reloadGame();
@@ -58,6 +67,7 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 	{
 		_potato.reload();
 		_obstacles = new Array();
+		_score = 0;
 	}
 
 	//create obstacles every x seconds

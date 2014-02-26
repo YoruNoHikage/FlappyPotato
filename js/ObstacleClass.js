@@ -9,6 +9,7 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
     var _width = 50;
     var _height = height;
 	var _hitbox = new Hitbox(_x, _y, _width, _height);
+	var _passed = false;
 	
 	//movement function
 	this.moveForward = function(speedX)
@@ -34,6 +35,24 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
 	this.outFromLayer = function()
 	{
 		if(_x + _width < 0)
+			return true;
+		else 
+			return false;
+	}
+
+	this.isPassed = function()
+	{
+		return _passed;
+	}
+
+	this.pass = function()
+	{
+		_passed = true;
+	}
+
+	this.lookIfPassed = function(playerHitbox)
+	{
+		if(_hitbox.getX() < playerHitbox.getX())
 			return true;
 		else
 			return false;

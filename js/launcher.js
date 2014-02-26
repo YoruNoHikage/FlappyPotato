@@ -3,7 +3,6 @@ window.onload = function()
 	var canvas  = document.querySelector('#canvas');
 	var context = canvas.getContext('2d');
 	var game = new Game(640, 480, context, canvas);
-	var loaded = false;
 	
 	function loop()
 	{
@@ -11,7 +10,7 @@ window.onload = function()
 		{
 			game.gameLoop();
 			//periodic obstacle creation
-			window.setInterval(game.createObstacle, 2000);
+			window.setInterval(game.createObstacle, 1000);
 		}
 		else
 			setTimeout(loop,100);

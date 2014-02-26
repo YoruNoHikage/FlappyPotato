@@ -1,25 +1,45 @@
 var Hitbox = function(x, y, width, height)
 {
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
+	var _x = x;
+	var _y = y;
+	var _width = width;
+	var _height = height;
 	
 	this.setX = function(x)
 	{
-		this.x = x;
+		_x = x;
+	}
+
+	this.getX = function()
+	{
+		return _x;
+	}
+
+	this.getY = function()
+	{
+		return _y;
 	}
 	
 	this.setY = function(y)
 	{
-		this.y = y;
+		_y = y;
+	}
+
+	this.getWidth = function()
+	{
+		return _width;
+	}
+
+	this.getHeight = function()
+	{
+		return _height;
 	}
 	
 	this.intersect = function(otherBox)
 	{
-		if((this.x <= otherBox.x && (otherBox.x - this.x) < this.width) || (this.x > otherBox.x && (this.x - otherBox.x) < otherBox.width))
+		if((_x <= otherBox.getX() && (otherBox.getX() - _x) < _width) || (_x > otherBox.getX() && (_x - otherBox.getX()) < otherBox.getWidth()))
 		{
-			if((this.y <= otherBox.y && (otherBox.y - this.y) < this.height) || (this.y > otherBox.y && (this.y - otherBox.y) < otherBox.height))
+			if((_y <= otherBox.getY() && (otherBox.getY() - _y) < _height) || (_y > otherBox.getY() && (_y - otherBox.getY()) < otherBox.getHeight()))
 				return true;
 			else
 				return false;
