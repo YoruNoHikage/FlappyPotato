@@ -57,4 +57,10 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
 		else
 			return false;
 	}
+
+	//return distance from the right border to trigger a new obstacle
+	this.distanceFromOrigin = function()
+	{
+		return _canvasWidth - _x;
+	}
 }

@@ -10,6 +10,7 @@ var Potato = function(canvasWidth, canvasHeight)
     var _height = 40;
 	var _speedY = 0;
 	var _hitbox = new Hitbox(_x, _y, _width, _height);
+	var _fallen = false;
 
 	//related to the potato's sprite
 	var _spriteSheet = new Image();
@@ -29,6 +30,7 @@ var Potato = function(canvasWidth, canvasHeight)
 		_x = 100;
 		_y = 100;
 		_speedY = 0;
+		_fallen = false;
 	}
 	
 	this.draw = function(context)
@@ -53,6 +55,7 @@ var Potato = function(canvasWidth, canvasHeight)
 		{
 			_y = _canvasHeight - _height;
 			_speedY = 0;
+			_fallen = true;
 		}
 		else
 		{
@@ -70,6 +73,21 @@ var Potato = function(canvasWidth, canvasHeight)
 	this.intersect = function(object)
 	{
 		return _hitbox.intersect(object.getHitbox());
+	}
+
+	this.fall = function()
+	{
+		_fallen = true;
+	}
+
+	this.fly = function()
+	{
+		_fallen = false;
+	}
+
+	this.hasFallen = function()
+	{
+		return _fallen;
 	}
 
 	//function used by GameClass to know if the sprite sheet is completely downloaded
