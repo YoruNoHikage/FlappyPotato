@@ -25,13 +25,6 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 		//weird function to clear context ; previous not working 
 		_canvas.width = _canvas.width;
 
-		//reposition of the potato & drawing
-		_potato.reevaluatePosition();
-		_potato.draw(_context);
-
-		//score display
-		_score.draw(_context, _canvasWidth * 0.9, _canvasHeight * 0.1);
-
 		//for each obstacle
 		for(var i = 0; i < _obstacles.length; i++)
 		{
@@ -46,11 +39,18 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 
 			//intersections (game over)
 			if(_potato.intersect(_obstacles[i]) || _potato.getHitbox().y + _potato.getHitbox().height >= canvasHeight)
-				_self.gameOver();
+				_potato.hit();
 		}
 
+		//reposition of the potato & drawing
+		_potato.reevaluatePosition();
+		_potato.draw(_context);
+
+		//score display
+		_score.draw(_context, _canvasWidth * 0.9, _canvasHeight * 0.1);
+
 		//if the potato has fallen
-		if(_potato.hasFallen())
+		if(_potato.isDead())
 			_self.gameOver();   
 
 		if(_obstacles.length > 0)
@@ -102,8 +102,7 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 	//user action
 	this.arrowUp = function()
 	{
-		_potato.addAcceleration(-10);
-		_potato.changeCurrentSprite(0);
+		_potato.flap();
 	}
 
 	this.everythingLoaded = function()

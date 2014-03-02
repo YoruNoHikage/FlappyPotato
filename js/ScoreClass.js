@@ -23,7 +23,7 @@ var Score = function()
 	this.flush = function()
 	{
 		var xhr = null;
- 
+ 		
 	    if (window.XMLHttpRequest)
 	        xhr = new XMLHttpRequest();
 	    else if (window.ActiveXObject) 
@@ -55,20 +55,21 @@ var Score = function()
 	    		askName = true;
 	    }
 
+	    //now we'll give the score to the php script
 	    if(askName)
 	    {
-	    	var name = prompt("Congrats ! Tell us you name to write it in the great potato hall of fame", "Patate Volante");
+	    	var name = prompt("Congrats ! Tell us you name to write it in the great potato hall of fame", "");
 	    	xhr.open("POST", "http://localhost/flyingpotato/ranking.php", false);
 	    	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	    	xhr.send("score=" + (_score / 2) + "&name=" + name);
 	    }
 
+	    //we refresh the ranking table to display it
 	    xhr.open("POST", "http://localhost/flyingpotato/ranking.xml", false);
 	    xhr.send("score=" + _score);
 	    var xmlResponse = xhr.responseXML;
 	    var players = xmlResponse.querySelectorAll("player");
 
-	    //for each player of the ranking file
 	    textToDisplay = "";
 	    for(var i = 0 ; i < players.length ; i++)
 	    {
