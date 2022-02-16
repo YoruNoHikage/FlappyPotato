@@ -14,6 +14,12 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
 	var _sprite = new Image();
 	_sprite.src = "img/spritesheet_econome.png";
 
+	const sharpBitSize = 65;
+	const middleBitSize = 15;
+	const lastBitSize = 70;
+
+	const repeatedBitSize = _height - lastBitSize;
+
 	//movement function
 	this.moveForward = function(speedX)
 	{
@@ -31,11 +37,34 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
 		if (y === 0) {
 			context.save();
 			context.rotate(Math.PI);
-			context.drawImage(_sprite, -_x, -_y, - _width, - _height);
-		
+
+			// sharp bit
+			context.drawImage(_sprite, 0, 0, 67, sharpBitSize, - _x, - _height, - _width, sharpBitSize);
+
+			// middle bit
+			if (repeatedBitSize > - middleBitSize) {
+				context.drawImage(_sprite, 0, sharpBitSize, 67, middleBitSize, - _x, 0, - _width, -_height + sharpBitSize);
+
+				// last bit
+				if (repeatedBitSize > lastBitSize) {
+					context.drawImage(_sprite, 0, sharpBitSize + middleBitSize, 67, lastBitSize, - _x, 0, - _width, - lastBitSize);
+				}
+			}
+
 			context.restore();
 		} else {
-			context.drawImage(_sprite, _x, _y, _width, _height);
+			// sharp bit
+			context.drawImage(_sprite, 0, 0, 67, sharpBitSize, _x, _y, _width, sharpBitSize);
+
+			// middle bit
+			if (repeatedBitSize > - middleBitSize) {
+				context.drawImage(_sprite, 0, sharpBitSize, 67, middleBitSize, _x, _y + sharpBitSize, _width, _height - sharpBitSize);
+
+				// last bit
+				if (repeatedBitSize > lastBitSize) {
+					context.drawImage(_sprite, 0, sharpBitSize + middleBitSize, 67, lastBitSize, _x, canvasHeight - lastBitSize, _width, lastBitSize);
+				}
+			}
 		}
 	}
 	
