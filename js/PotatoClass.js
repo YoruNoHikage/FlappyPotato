@@ -19,7 +19,7 @@ var Potato = function(canvasWidth, canvasHeight)
 	var _spriteSheet = new Image();
     _spriteSheet.src = "img/spritesheet.png";
 	var _imgLoaded = false;
-	_spriteSheet.onload = function(){_imgLoaded = true; alert("Sprite loaded");};
+	_spriteSheet.onload = function(){_imgLoaded = true;};
 
 	//some sprite have different size
 	var anim1Width = 267;
