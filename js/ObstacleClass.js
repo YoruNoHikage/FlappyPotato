@@ -10,7 +10,10 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
     var _height = height;
 	var _hitbox = new Hitbox(_x, _y, _width, _height);
 	var _passed = false;
-	
+
+	var _sprite = new Image();
+	_sprite.src = "img/spritesheet_econome.png";
+
 	//movement function
 	this.moveForward = function(speedX)
 	{
@@ -21,8 +24,19 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
 	//draw the obstacle
 	this.draw = function(context)
 	{
-		context.fillStyle = "green";
-		context.fillRect(_x, _y, _width, _height);
+		// hitbox debug
+		// context.fillStyle = "green";
+		// context.fillRect(_x, _y, _width, _height);
+
+		if (y === 0) {
+			context.save();
+			context.rotate(Math.PI);
+			context.drawImage(_sprite, -_x, -_y, - _width, - _height);
+		
+			context.restore();
+		} else {
+			context.drawImage(_sprite, _x, _y, _width, _height);
+		}
 	}
 	
 	//if you want to give this hitbox to an intersect function
