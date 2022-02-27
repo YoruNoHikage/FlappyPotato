@@ -11,9 +11,13 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 	var _score = new Score();
 
 	var _obstacles = new Array();
-	var _speedX = 4;
-	var _holeLength = 190;
+	var _speedX = 10;
+	var _holeLength = 420;
 	var _obstaclesInWindow = 3;
+
+	const gradientSky = context.createLinearGradient(0, 0, 0, _canvasHeight);
+    gradientSky.addColorStop(0, "#0099ff");
+    gradientSky.addColorStop(1, "white");
 
 	//instance of this to enable the callback function (it stinks)
 	var _self = this;
@@ -21,9 +25,8 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 	//-Main Loop
 	this.gameLoop = function()
 	{
-		//context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-		//weird function to clear context ; previous not working 
-		_canvas.width = _canvas.width;
+		context.fillStyle = gradientSky;
+		context.fillRect(0, 0, _canvasWidth, _canvasHeight);
 
 		//for each obstacle
 		for(var i = 0; i < _obstacles.length; i++)
@@ -31,15 +34,16 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 			_obstacles[i].moveForward(_speedX);
 			_obstacles[i].draw(_context);
 			
-			if(_obstacles[i].lookIfPassed(_potato.getHitbox()) && !_obstacles[i].isPassed())
+			if(!_potato.hasBeenHit() && _obstacles[i].lookIfPassed(_potato.getHitbox()) && !_obstacles[i].isPassed())
 			{
 				_score.increment();
 				_obstacles[i].pass();
 			}
 
 			//intersections (game over)
-			if(_potato.intersect(_obstacles[i]) || _potato.getHitbox().y + _potato.getHitbox().height >= canvasHeight)
+			if(_potato.intersect(_obstacles[i]) || _potato.getHitbox().getY() + _potato.getHitbox().getHeight() >= canvasHeight) {
 				_potato.hit();
+			}
 		}
 
 		//reposition of the potato & drawing
@@ -51,7 +55,7 @@ var Game = function(canvasWidth, canvasHeight, context, canvas)
 
 		//if the potato has fallen
 		if(_potato.isDead())
-			_self.gameOver();   
+			_self.gameOver();			
 
 		if(_obstacles.length > 0)
 		{

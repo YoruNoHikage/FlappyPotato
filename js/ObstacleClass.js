@@ -1,22 +1,29 @@
 var Obstacle = function(y, height, canvasWidth, canvasHeight)
 {
-	//context carac
-	var _canvasWidth = canvasWidth;
-	var _canvasHeight = canvasHeight;
 	//obstacles carac
-    var _x = _canvasWidth;
+    var _x = canvasWidth;
     var _y = y;
-    var _width = 50;
+    var _width = 150;
     var _height = height;
 	var _hitbox = new Hitbox(_x, _y, _width, _height);
 	var _passed = false;
 
 	var _sprite = new Image();
 	_sprite.src = "img/spritesheet_econome.png";
+	_sprite.height = '568px';
+	_sprite.width = '150px';
 
-	const sharpBitSize = 65;
-	const middleBitSize = 15;
-	const lastBitSize = 70;
+	const spriteH = 568;
+
+	const sizes = [
+		{x: 0, y: 0, w: 150, h: 150}, // sharp bit height 
+		{x: 0, y: 160, w: 150, h: 1}, // middle bit height 
+		{x: 0, y: spriteH - 120, w: 150, h: 110}, // last bit height 
+	];
+
+	const sharpBitSize = sizes[0].h;
+	const middleBitSize = sizes[1].h;
+	const lastBitSize = sizes[2].h;
 
 	const repeatedBitSize = _height - lastBitSize;
 
@@ -31,38 +38,37 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
 	this.draw = function(context)
 	{
 		// hitbox debug
-		// context.fillStyle = "green";
-		// context.fillRect(_x, _y, _width, _height);
+		// _hitbox.draw(context, 'green');
 
 		if (y === 0) {
 			context.save();
 			context.rotate(Math.PI);
 
 			// sharp bit
-			context.drawImage(_sprite, 0, 0, 67, sharpBitSize, - _x, - _height, - _width, sharpBitSize);
+			context.drawImage(_sprite, sizes[0].x, sizes[0].y, sizes[0].w, sizes[0].h, - _x, - _height, - _width, sharpBitSize);
 
 			// middle bit
-			if (repeatedBitSize > - middleBitSize) {
-				context.drawImage(_sprite, 0, sharpBitSize, 67, middleBitSize, - _x, 0, - _width, -_height + sharpBitSize);
+			if (repeatedBitSize > 0) {
+				context.drawImage(_sprite, sizes[1].x, sizes[1].y, sizes[1].w, sizes[1].h, - _x, 0, - _width, -_height + sharpBitSize);
 
 				// last bit
-				if (repeatedBitSize > lastBitSize) {
-					context.drawImage(_sprite, 0, sharpBitSize + middleBitSize, 67, lastBitSize, - _x, 0, - _width, - lastBitSize);
+				if (repeatedBitSize > lastBitSize * 2) {
+					context.drawImage(_sprite, sizes[2].x, sizes[2].y, sizes[2].w, sizes[2].h, - _x, 0, - _width, - lastBitSize);
 				}
 			}
 
 			context.restore();
 		} else {
 			// sharp bit
-			context.drawImage(_sprite, 0, 0, 67, sharpBitSize, _x, _y, _width, sharpBitSize);
+			context.drawImage(_sprite, sizes[0].x, sizes[0].y, sizes[0].w, sizes[0].h, _x, _y, _width, sharpBitSize);
 
 			// middle bit
-			if (repeatedBitSize > - middleBitSize) {
-				context.drawImage(_sprite, 0, sharpBitSize, 67, middleBitSize, _x, _y + sharpBitSize, _width, _height - sharpBitSize);
+			if (repeatedBitSize > 0) {
+				context.drawImage(_sprite, sizes[1].x, sizes[1].y, sizes[1].w, sizes[1].h, _x, _y + sharpBitSize, _width, _height - sharpBitSize);
 
 				// last bit
-				if (repeatedBitSize > lastBitSize) {
-					context.drawImage(_sprite, 0, sharpBitSize + middleBitSize, 67, lastBitSize, _x, canvasHeight - lastBitSize, _width, lastBitSize);
+				if (repeatedBitSize > lastBitSize * 2) {
+					context.drawImage(_sprite, sizes[2].x, sizes[2].y, sizes[2].w, sizes[2].h, _x, canvasHeight - lastBitSize, _width, lastBitSize);
 				}
 			}
 		}
@@ -104,6 +110,6 @@ var Obstacle = function(y, height, canvasWidth, canvasHeight)
 	//return distance from the right border to trigger a new obstacle
 	this.distanceFromOrigin = function()
 	{
-		return _canvasWidth - _x;
+		return canvasWidth - _x;
 	}
 }

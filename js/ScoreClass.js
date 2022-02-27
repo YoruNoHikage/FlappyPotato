@@ -5,7 +5,7 @@ var Score = function()
 	this.draw = function(context, posX, posY)
 	{
 		//score display
-		context.font = "bold 32pt Calibri,Geneva,Arial";
+		context.font = "bold 72pt Calibri,Geneva,Arial";
 		context.fillStyle = "#000";
 		context.fillText(_score / 2, posX, posY);
 	}

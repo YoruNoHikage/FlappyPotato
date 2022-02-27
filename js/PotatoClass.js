@@ -1,15 +1,12 @@
 var Potato = function(canvasWidth, canvasHeight)
 {
-	//context carac
-	var _canvasWidth = canvasWidth;
-	var _canvasHeight = canvasHeight;
     //the potato's attributes (position, size, cooking)
-    var _x = 100;
-    var _y = 100;
-    var _width = 60;
-    var _height = 40;
+    var _x = 300;
+    var _y = 300;
+    var _width = 267;
+    var _height = 315;
 	var _speedY = 0;
-	var _hitbox = new Hitbox(_x, _y, _width, _height);
+	var _hitbox = new Hitbox(_x + 90, _y + 120, 120, 80);
 	//state
 	var _hit = false;
 	var _rebound = false;
@@ -24,9 +21,9 @@ var Potato = function(canvasWidth, canvasHeight)
 	//some sprite have different size
 	var anim1Width = 267;
 	var anim1Height = 297;
-	var anim2Width = 120;
+	var anim2Width = 125;
 	var anim2Height = 121;
-	var anim3Width = 120;
+	var anim3Width = 125;
 	var anim3Height = 121;
 	//each frame as an x/y-position (0, 267, 267*2, etc)
 	var _spriteX = Array();
@@ -62,15 +59,15 @@ var Potato = function(canvasWidth, canvasHeight)
 	this.draw = function(context)
 	{
 		//hitbox debug
- 		//context.fillStyle = "yellow";
-		//context.fillRect(_x, _y, _width, _height);
+		// _hitbox.draw(context, "yellow");
+
 		//real potato (redimensionnee a l'arrache)
 		if(!_hit)
-			context.drawImage(_spriteSheet, _spriteX[_currentSprite], _spriteY[_currentSprite], anim1Width, anim1Height, _x - _width * 0.25, _y - _height * 0.5, _width * 1.5, _height * 2);
+			context.drawImage(_spriteSheet, _spriteX[_currentSprite], _spriteY[_currentSprite], anim1Width, anim1Height, _x, _y, _width, _height);
 		else if(_hit && !_rebound)
-			context.drawImage(_spriteSheet, _spriteX[_currentSprite], _spriteY[_currentSprite], anim2Width, anim2Height, _x, _y, _width, _height);
+			context.drawImage(_spriteSheet, _spriteX[_currentSprite], _spriteY[_currentSprite], anim2Width, anim2Height, _x + (_width - anim2Width) / 2, _y  + (_height - anim2Height) / 2, anim2Width, anim2Height);
 		else if(_rebound)
-			context.drawImage(_spriteSheet, _spriteX[_currentSprite], _spriteY[_currentSprite], anim3Width, anim3Height, _x, _y, _width, _height);
+			context.drawImage(_spriteSheet, _spriteX[_currentSprite], _spriteY[_currentSprite], anim3Width, anim3Height, _x + (_width - anim3Width) / 2, _y + (_height - anim3Height) / 2, anim3Width, anim3Height);
 	}
 	
 	//to simulate gravity
@@ -83,7 +80,7 @@ var Potato = function(canvasWidth, canvasHeight)
 	{
 		if(!_hit && !_rebound)
 		{
-			_self.addAcceleration(-10);
+			_self.addAcceleration(-25);
 			_self.changeCurrentSprite(0);
 		}
 			
@@ -93,7 +90,7 @@ var Potato = function(canvasWidth, canvasHeight)
 	{
 		if(!_rebound)
 		{
-			_self.addAcceleration(-10);
+			_self.addAcceleration(-25);
 			_rebound = true;
 		}
 	}
@@ -101,26 +98,26 @@ var Potato = function(canvasWidth, canvasHeight)
 	//called before processing each frame
 	this.reevaluatePosition = function()
 	{
-		if(_y + _height >= _canvasHeight)
+		if(_hitbox.getY() + _hitbox.getHeight() >= canvasHeight)
 		{
 			if(!_rebound)
 			{
-				_y = _canvasHeight - _height - 1;
+				_y = canvasHeight - (_height - _hitbox.getHeight()) - 1;
 				_self.rebound();
 			}
 			else
 			{
-				_y = _canvasHeight - _height;
+				_y = canvasHeight - (_hitbox.getHeight() + 120);
 				_speedY = 0;
 				_dead = true;
 			}
 		}
 		else
 		{
-			_speedY += 0.7;
+			_speedY += 1.5;
 			_y += _speedY;
 		}
-		_hitbox.setY(_y);
+		_hitbox.setY(_y + 120);
 	}
 
 	this.hit = function()

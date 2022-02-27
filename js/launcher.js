@@ -2,9 +2,8 @@ window.onload = function()
 {
 	var canvas  = document.querySelector('#canvas');
 	var context = canvas.getContext('2d');
-	var game = new Game(640, 480, context, canvas);
-	var loaded = false;
-	
+	var game = new Game(canvas.getAttribute("width"), canvas.getAttribute("height"), context, canvas);
+
 	function loop()
 	{
 		if(game.everythingLoaded())

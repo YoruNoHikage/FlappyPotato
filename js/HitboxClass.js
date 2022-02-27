@@ -47,4 +47,9 @@ var Hitbox = function(x, y, width, height)
 		else
 			return false;
 	}
+
+	this.draw = function(context, color) {
+		context.fillStyle = color;
+    	context.fillRect(_x, _y, _width, _height);
+	}
 }
