@@ -20,7 +20,13 @@ window.onload = function()
 		var key = window.event ? event.keyCode : event.which;
 		if(key == 32 && !keyRepetition)
 		{
-			game.arrowUp();
+			if (game.isStarted()) {
+				game.arrowUp();
+			}
+			else {
+				game.reloadGame();
+				game.start();
+			}
 			keyRepetition = true;
 		}
 	}

@@ -50,9 +50,11 @@ var Potato = function(canvasWidth, canvasHeight)
 	//when you want to reset the game
 	this.reload = function()
 	{
-		_x = 100;
-		_y = 100;
+		_x = 300;
+		_y = 300;
 		_speedY = 0;
+		_currentSprite = 0;
+		_hitbox = new Hitbox(_x + 90, _y + 120, 120, 80);
 		_self.fly();
 	}
 	
@@ -165,7 +167,7 @@ var Potato = function(canvasWidth, canvasHeight)
 	{
 		_currentSprite++;
 		if(_currentSprite >= 9 && !_hit)
-			_currentSprite = 8;
+			_currentSprite = 0;
 		else if(_currentSprite < 9 && _hit && !_rebound)
 			_currentSprite = 9;
 		else if(_currentSprite >= 19 && _hit && !_rebound)
